@@ -1,10 +1,10 @@
 import { Link } from 'react-router'
 import { useState } from 'react'
-import Logo from '../../assets/images/Logo.png'
-import RegistrationCarousal from './Carousal'
+import Logo from '../assets/images/Logo.png'
+import RegistrationCarousal from '../components/registration/Carousal'
 import { FiEye } from "react-icons/fi";
 import { FiEyeOff } from "react-icons/fi";
-import '../../assets/styles/registration/signin.css'
+import '../assets/styles/registration/signin.css'
 
 function Signin() {
     const [showPassword, setShowPassword] = useState(false)

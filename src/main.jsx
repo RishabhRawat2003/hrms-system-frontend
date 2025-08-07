@@ -6,8 +6,9 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import { ToastContainer } from 'react-toastify'
 // import NotFound from './Pages/ErrorPage.jsx'
 import 'react-toastify/dist/ReactToastify.css';
-import Signup from './components/registration/Signup.jsx'
-import Signin from './components/registration/Signin.jsx'
+import Signup from './pages/Signup.jsx'
+import Signin from './pages/Signin.jsx'
+import Dashboard from './pages/Dashboard.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -15,6 +16,7 @@ const router = createBrowserRouter(
       <Route path="/" element={<App />}>
         <Route path='/' element={<Signup />} />
         <Route path='/signin' element={<Signin />} />
+        <Route path='/dashboard' element={<Dashboard />} />
       </Route>
       {/* <Route path="*" element={<NotFound />} /> */}
     </>
