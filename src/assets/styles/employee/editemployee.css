@@ -1,0 +1,205 @@
+.edit-employee-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    padding: 1rem;
+}
+
+.edit-employee-content {
+    background-color: white;
+    border-radius: 1rem;
+    width: 100%;
+    max-width: 64rem;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.edit-employee-header {
+    background-color: #4D007D;
+    color: white;
+    position: relative;
+    padding: 1rem 1.5rem;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-employee-title {
+    font-size: 1.25rem;
+    text-align: center;
+    margin: 0;
+}
+
+.edit-employee-close-btn {
+    position: absolute;
+    right: 1.5rem;
+    color: white;
+    font-size: 1.875rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    line-height: 1;
+}
+
+.edit-employee-close-btn:hover {
+    color: #d1d5db;
+}
+
+.edit-employee-form {
+    padding: 1.5rem;
+}
+
+.edit-employee-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+    .edit-employee-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    .edit-employee-grid {
+        gap: 2rem;
+    }
+}
+
+.edit-employee-input,
+.edit-employee-select,
+.edit-employee-date-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid #4D007D;
+    font-size: 1rem;
+    box-sizing: border-box;
+    outline: none;
+    color: #000000;
+    background-color: #ffffff;
+}
+
+.edit-employee-input:focus,
+.edit-employee-select:focus,
+.edit-employee-date-input:focus {
+    border-color: #4D007D;
+    box-shadow: 0 0 0 2px rgba(77, 0, 125, 0.2);
+}
+
+.edit-employee-select {
+    appearance: none;
+}
+
+.edit-employee-select-wrapper {
+    position: relative;
+}
+
+.edit-employee-select-arrow {
+    position: absolute;
+    pointer-events: none;
+    top: 50%;
+    right: 0.75rem;
+    transform: translateY(-50%);
+}
+
+.edit-employee-arrow-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #4D007D;
+}
+
+.edit-employee-date-wrapper {
+    position: relative;
+}
+
+.edit-employee-date-input {
+    position: relative;
+}
+
+.edit-employee-date-input::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0;
+    position: absolute;
+    right: 0.75rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #4D007D;
+    background: transparent;
+}
+
+.edit-employee-date-input::-webkit-datetime-edit {
+    color: black;
+}
+
+.edit-employee-date-input::-webkit-datetime-edit-fields-wrapper {
+    padding: 0;
+}
+
+.edit-employee-date-input::-webkit-datetime-edit-text {
+    color: #4D007D;
+    padding: 0 0.3em;
+}
+
+.edit-employee-date-input::-webkit-datetime-edit-month-field {
+    color: black;
+}
+
+.edit-employee-date-input::-webkit-datetime-edit-day-field {
+    color: black;
+}
+
+.edit-employee-date-input::-webkit-datetime-edit-year-field {
+    color: black;
+}
+
+.edit-employee-calendar-icon {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.edit-employee-calendar-svg {
+    color: #4D007D;
+}
+
+.edit-employee-button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.edit-employee-button {
+    padding: 0.5rem 3rem;
+    border: none;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.edit-employee-button-enabled {
+    background-color: #4D007D;
+    color: white;
+}
+
+.edit-employee-button-enabled:hover {
+    background-color: #3d0063;
+}
+
+.edit-employee-button-disabled {
+    background-color: #9ca3af;
+    color: white;
+    cursor: not-allowed;
+}

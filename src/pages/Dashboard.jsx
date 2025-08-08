@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from 'react';
 import {
     FaTimes,
     FaBars,
-    FaSignOutAlt,
     FaRegBell,
     FaChevronDown,
     FaSearch
@@ -19,10 +18,10 @@ import { LoadingSpinnerWithOverlay } from '../components/global/Loading';
 import { Link } from 'react-router';
 import PopupModal from '../components/global/Popup';
 import '../assets/styles/dashboard/dashboard.css';
+import Candidates from './Candidates';
+import Employees from './Employees';
+import Attendance from './Attendance';
 
-const Candidates = () => <SectionPlaceholder title="Candidates" />;
-const Employees = () => <SectionPlaceholder title="Employees" />;
-const Attendance = () => <SectionPlaceholder title="Attendance" />;
 const Leaves = () => <SectionPlaceholder title="Leaves" />;
 
 const SectionPlaceholder = ({ title }) => (
@@ -36,7 +35,7 @@ const SectionPlaceholder = ({ title }) => (
 export default function Dashboard() {
     const [activeSection, setActiveSection] = useState('candidates');
     const [logoutPopup, setLogoutPopup] = useState(false);
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -235,11 +234,19 @@ export default function Dashboard() {
                                     {isOpen && (
                                         <div className="dashboard-dropdown-menu">
                                             <button
-                                                onClick={() => setLogoutPopup(true)}
                                                 className="dashboard-dropdown-item"
                                             >
-                                                <FaSignOutAlt className="dashboard-dropdown-icon" />
-                                                Logout
+                                                Edit Profile
+                                            </button>
+                                            <button
+                                                className="dashboard-dropdown-item"
+                                            >
+                                                Change Password
+                                            </button>
+                                            <button
+                                                className="dashboard-dropdown-item"
+                                            >
+                                                Manage Notifications
                                             </button>
                                         </div>
                                     )}

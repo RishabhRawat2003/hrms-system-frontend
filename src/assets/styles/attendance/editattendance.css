@@ -1,0 +1,159 @@
+.attendance-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    padding: 1rem;
+}
+
+.attendance-modal-content {
+    background-color: white;
+    border-radius: 1rem;
+    width: 100%;
+    max-width: 55rem;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.attendance-modal-header {
+    background-color: #4D007D;
+    color: white;
+    position: relative;
+    padding: 1rem 1.5rem;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.attendance-modal-title {
+    font-size: 1.25rem;
+    text-align: center;
+    margin: 0;
+}
+
+.attendance-modal-close-btn {
+    position: absolute;
+    right: 1.5rem;
+    color: white;
+    font-size: 1.875rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    line-height: 1;
+}
+
+.attendance-modal-close-btn:hover {
+    color: #d1d5db;
+}
+
+.attendance-modal-form {
+    padding: 1.5rem;
+}
+
+.attendance-modal-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+    .attendance-modal-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    .attendance-modal-grid {
+        gap: 2rem;
+    }
+}
+
+.attendance-modal-input,
+.attendance-modal-select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid #4D007D;
+    font-size: 1rem;
+    box-sizing: border-box;
+    outline: none;
+    color: #000000;
+    background-color: #ffffff;
+}
+
+.attendance-modal-input:focus,
+.attendance-modal-select:focus {
+    border-color: #4D007D;
+    box-shadow: 0 0 0 2px rgba(77, 0, 125, 0.2);
+}
+
+.attendance-modal-input-disabled {
+    background-color: #f3f4f6;
+    cursor: not-allowed;
+}
+
+.attendance-modal-select {
+    appearance: none;
+}
+
+.attendance-modal-select-wrapper {
+    position: relative;
+}
+
+.attendance-modal-select-arrow {
+    position: absolute;
+    pointer-events: none;
+    top: 50%;
+    right: 0.75rem;
+    transform: translateY(-50%);
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #4D007D;
+}
+
+.attendance-modal-task-full {
+    grid-column: span 2;
+}
+
+@media (max-width: 767px) {
+    .attendance-modal-task-full {
+        grid-column: span 1;
+    }
+}
+
+.attendance-modal-button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.attendance-modal-button {
+    padding: 0.5rem 3rem;
+    border: none;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.attendance-modal-button-enabled {
+    background-color: #4D007D;
+    color: white;
+}
+
+.attendance-modal-button-enabled:hover {
+    background-color: #3d0063;
+}
+
+.attendance-modal-button-disabled {
+    background-color: #9ca3af;
+    color: white;
+    cursor: not-allowed;
+}

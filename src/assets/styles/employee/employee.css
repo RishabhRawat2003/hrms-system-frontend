@@ -1,0 +1,261 @@
+.employee-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.employee-header {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+    .employee-header {
+        flex-direction: row-reverse;
+        flex-wrap: wrap;
+    }
+}
+
+@media (min-width: 768px) {
+    .employee-header {
+        justify-content: space-between;
+    }
+}
+
+.employee-search-wrapper {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+    .employee-search-wrapper {
+        width: auto;
+        flex-direction: row;
+    }
+}
+
+@media (min-width: 1024px) {
+    .employee-search-wrapper {
+        gap: 1rem;
+    }
+}
+
+.employee-search-box {
+    width: 100%;
+    display: flex;
+    border: 1px solid #6b7280;
+    align-items: center;
+    padding: 0.5rem 0;
+    gap: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+    .employee-search-box {
+        gap: 0.75rem;
+    }
+}
+
+.employee-search-icon {
+    color: #A4A4A4;
+}
+
+.employee-search-input {
+    width: 100%;
+    outline: none;
+}
+
+@media (min-width: 1024px) {
+    .employee-search-input {
+        width: 15rem;
+    }
+}
+
+.employee-filter-wrapper {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+    .employee-filter-wrapper {
+        width: auto;
+        flex-wrap: wrap;
+    }
+}
+
+.employee-filter-container {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.employee-select-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.employee-position-select {
+    appearance: none;
+    border: 1px solid #6b7280;
+    border-radius: 9999px;
+    width: 100%;
+    padding: 0.5rem 1.5rem;
+    padding-right: 2.5rem;
+    color: black;
+    outline: none;
+}
+
+@media (min-width: 1024px) {
+    .employee-position-select {
+        width: 15rem;
+    }
+}
+
+.employee-select-arrow {
+    pointer-events: none;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+@media (min-width: 1024px) {
+    .employee-select-arrow {
+        right: 0.5rem;
+    }
+}
+
+.employee-arrow-icon {
+    width: 1rem;
+    height: 1rem;
+    color: #374151;
+}
+
+.employee-table-wrapper {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.employee-table-container {
+    overflow-x: auto;
+    padding: 1rem;
+}
+
+.employee-table {
+    min-width: 100%;
+    font-size: 0.875rem;
+    text-align: left;
+    height: 100%;
+    box-shadow: 0px 4px 10px 0px #12121233;
+    border-radius: 1.5rem;
+    overflow: hidden;
+}
+
+.employee-table-head {
+    background-color: #4D007D;
+    color: white;
+}
+
+.employee-table-header {
+    padding: 1rem;
+}
+
+.employee-table-row {
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.employee-table-cell {
+    padding: 0.75rem 1rem;
+}
+
+.employee-name-cell {
+    font-weight: 500;
+}
+
+.employee-action-cell {
+    position: relative;
+}
+
+.employee-action-wrapper {
+    position: relative;
+}
+
+.employee-action-button {
+    font-size: 1.25rem;
+    background: none;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.employee-action-button:hover {
+    background-color: #f3f4f6;
+}
+
+.employee-action-menu {
+    position: absolute;
+    right: 0;
+    width: 12rem;
+    overflow: hidden;
+    background-color: white;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    z-index: 50;
+}
+
+.employee-action-menu-down {
+    top: 100%;
+    margin-top: 0.25rem;
+}
+
+.employee-action-menu-up {
+    bottom: 100%;
+    margin-bottom: 0.25rem;
+}
+
+.employee-action-list {
+    font-size: 0.875rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.employee-action-item {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.employee-action-item:hover {
+    background-color: #f3f4f6;
+}
+
+.employee-action-delete:hover {
+    background-color: #fef2f2;
+    color: #dc2626;
+}
+
+.employee-no-data {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: #6b7280;
+}
