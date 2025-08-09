@@ -1,0 +1,452 @@
+/* Modal Overlay */
+.add-leaves-modal-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    padding: 1rem;
+}
+
+/* Modal Container */
+.add-leaves-modal-container {
+    background-color: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    max-width: 55rem;
+    width: 100%;
+    max-height: 95vh;
+    overflow-y: auto;
+}
+
+/* Modal Header */
+.add-leaves-modal-header {
+    background-color: #4D007D;
+    padding: 1.5rem;
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.add-leaves-modal-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: white;
+}
+
+.add-leaves-close-button {
+    color: white;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.add-leaves-close-button:hover {
+    color: #D1D5DB;
+}
+
+.add-leaves-close-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+/* Form */
+.add-leaves-form {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Form Rows */
+.add-leaves-form-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .add-leaves-form-row {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Input Groups */
+.add-leaves-input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Base Input Styles */
+.add-leaves-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid;
+    border-radius: 0.75rem;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.add-leaves-input-normal {
+    border-color: #D1D5DB;
+}
+
+.add-leaves-input-normal:focus {
+    border-color: transparent;
+    box-shadow: 0 0 0 2px #4D007D;
+}
+
+.add-leaves-input-error {
+    border-color: #FCA5A5;
+}
+
+.add-leaves-input-error:focus {
+    border-color: transparent;
+    box-shadow: 0 0 0 2px #EF4444;
+}
+
+/* Employee Input Wrapper */
+.add-leaves-employee-input-wrapper {
+    position: relative;
+}
+
+/* Clear Button */
+.add-leaves-clear-button {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9CA3AF;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 10;
+    transition: color 0.2s ease;
+}
+
+.add-leaves-clear-button:hover {
+    color: #4B5563;
+}
+
+.add-leaves-clear-icon {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Suggestions Dropdown */
+.add-leaves-suggestions-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 0.25rem;
+    background-color: white;
+    border: 1px solid #D1D5DB;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+    max-height: 12rem;
+    overflow-y: auto;
+}
+
+.add-leaves-suggestion-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid #F3F4F6;
+    transition: all 0.2s ease;
+}
+
+.add-leaves-suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.add-leaves-suggestion-item:hover {
+    background-color: #4D007D;
+    color: white;
+}
+
+.add-leaves-suggestion-name {
+    font-weight: 500;
+}
+
+.add-leaves-suggestion-designation {
+    font-size: 0.875rem;
+    opacity: 0.75;
+}
+
+/* Error Message */
+.add-leaves-error-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 0.25rem;
+}
+
+.add-leaves-error-message {
+    color: #EF4444;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+}
+
+.add-leaves-error-icon {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.25rem;
+    flex-shrink: 0;
+}
+
+/* Date Input */
+.add-leaves-date-input-wrapper {
+    position: relative;
+}
+
+.add-leaves-date-input {
+    cursor: pointer;
+}
+
+/* Calendar Modal */
+.add-leaves-calendar-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #D1D5DB;
+    border-radius: 0.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    z-index: 60;
+    padding: 1rem;
+    width: 20rem;
+}
+
+/* Calendar Header */
+.add-leaves-calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.add-leaves-calendar-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.add-leaves-calendar-nav-button {
+    padding: 0.25rem;
+    background: none;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.add-leaves-calendar-nav-button:hover {
+    background-color: #F3F4F6;
+}
+
+.add-leaves-calendar-nav-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+/* Calendar Days Header */
+.add-leaves-calendar-days-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.add-leaves-calendar-day-name {
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #6B7280;
+}
+
+/* Calendar Grid */
+.add-leaves-calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.25rem;
+}
+
+.add-leaves-calendar-day {
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.25rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.add-leaves-calendar-day-current {
+    color: #111827;
+}
+
+.add-leaves-calendar-day-current:hover {
+    background-color: #4D007D;
+    color: white;
+}
+
+.add-leaves-calendar-day-other {
+    color: #D1D5DB;
+    cursor: not-allowed;
+}
+
+.add-leaves-calendar-day-today {
+    background-color: #DBEAFE;
+    font-weight: 600;
+}
+
+.add-leaves-calendar-day-selected {
+    background-color: #4D007D;
+    color: white;
+}
+
+/* Calendar Footer */
+.add-leaves-calendar-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.add-leaves-calendar-close-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    background-color: #F3F4F6;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.add-leaves-calendar-close-button:hover {
+    background-color: #E5E7EB;
+}
+
+/* File Input */
+.add-leaves-file-input-wrapper {
+    position: relative;
+}
+
+.add-leaves-file-input-hidden {
+    display: none;
+}
+
+.add-leaves-file-input-label {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    transition: all 0.2s ease;
+}
+
+.add-leaves-file-input-label:hover {
+    background-color: #F9FAFB;
+}
+
+.add-leaves-file-input-label:focus-within {
+    box-shadow: 0 0 0 2px #4D007D;
+    border-color: transparent;
+}
+
+.add-leaves-file-input-text {
+    color: #6B7280;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.add-leaves-file-input-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #9CA3AF;
+    margin-left: 0.5rem;
+    flex-shrink: 0;
+}
+
+/* Reason Group */
+.add-leaves-reason-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Submit Container */
+.add-leaves-submit-container {
+    display: flex;
+    justify-content: center;
+    padding-top: 1rem;
+}
+
+/* Submit Button */
+.add-leaves-submit-button {
+    padding: 0.5rem 2rem;
+    font-weight: 500;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.add-leaves-submit-button:focus {
+    box-shadow: 0 0 0 2px rgba(77, 0, 125, 0.5), 0 0 0 4px rgba(77, 0, 125, 0.1);
+}
+
+.add-leaves-submit-button-enabled {
+    background-color: #4D007D;
+    color: white;
+}
+
+.add-leaves-submit-button-enabled:hover {
+    background-color: rgba(77, 0, 125, 0.85);
+}
+
+.add-leaves-submit-button-disabled {
+    background-color: #D1D5DB;
+    color: #6B7280;
+    cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 767px) {
+    .add-leaves-modal-overlay {
+        padding: 0.5rem;
+    }
+    
+    .add-leaves-modal-header {
+        padding: 1rem;
+    }
+    
+    .add-leaves-form {
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    .add-leaves-form-row {
+        gap: 1rem;
+    }
+    
+    .add-leaves-calendar-modal {
+        width: 18rem;
+        padding: 0.75rem;
+    }
+}

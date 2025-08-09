@@ -90,7 +90,7 @@ function EditAttendanceModal({ isOpen, onClose, employee = null, onUpdate }) {
             <div className="attendance-modal-content">
                 <div className="attendance-modal-header">
                     <h2 className="attendance-modal-title">
-                        {employee ? 'Edit Attendance Details' : 'Add New Attendance'}
+                        Edit Attendance Details
                     </h2>
                     <button
                         onClick={onClose}
@@ -205,11 +205,11 @@ function EditAttendanceModal({ isOpen, onClose, employee = null, onUpdate }) {
                             type="submit"
                             disabled={!isFormValid}
                             className={`attendance-modal-button ${isFormValid
-                                    ? 'attendance-modal-button-enabled'
-                                    : 'attendance-modal-button-disabled'
+                                ? 'attendance-modal-button-enabled'
+                                : 'attendance-modal-button-disabled'
                                 }`}
                         >
-                            {employee ? 'Update' : 'Save'}
+                            Save
                         </button>
                     </div>
                 </form>

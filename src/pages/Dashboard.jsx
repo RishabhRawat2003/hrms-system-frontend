@@ -21,16 +21,7 @@ import '../assets/styles/dashboard/dashboard.css';
 import Candidates from './Candidates';
 import Employees from './Employees';
 import Attendance from './Attendance';
-
-const Leaves = () => <SectionPlaceholder title="Leaves" />;
-
-const SectionPlaceholder = ({ title }) => (
-    <div className="dashboard-section-placeholder">
-        <h2 className="dashboard-section-title">{title}</h2>
-        <div className="dashboard-section-content">Content will be displayed here</div>
-    </div>
-
-);
+import Leaves from './Leaves';
 
 export default function Dashboard() {
     const [activeSection, setActiveSection] = useState('candidates');
@@ -51,10 +42,8 @@ export default function Dashboard() {
         }
     };
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
-            // Type assertion to satisfy .contains()
             if (
                 dropdownRef.current &&
                 event.target instanceof Node &&
@@ -110,7 +99,6 @@ export default function Dashboard() {
                 loading
                     ? <LoadingSpinnerWithOverlay />
                     : <>
-                        {/* Mobile sidebar toggle button */}
                         <button
                             className="mobile-toggle"
                             onClick={() => setSidebarOpen(!sidebarOpen)}

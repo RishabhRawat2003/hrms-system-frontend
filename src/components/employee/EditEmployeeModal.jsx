@@ -200,7 +200,7 @@ function EditEmployeeModal({ isOpen, onClose, employee = null }) {
                                 : 'edit-employee-button-disabled'
                                 }`}
                         >
-                            {employee ? 'Update' : 'Save'}
+                            Save
                         </button>
                     </div>
                 </form>
