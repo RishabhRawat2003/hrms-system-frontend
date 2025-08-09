@@ -1,10 +1,14 @@
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useState } from 'react'
 import Logo from '../assets/images/Logo.png'
 import RegistrationCarousal from '../components/registration/Carousal'
 import { FiEye } from "react-icons/fi";
 import { FiEyeOff } from "react-icons/fi";
 import '../assets/styles/registration/signin.css'
+import { toast } from 'react-toastify';
+import axios from 'axios';
+
+const backend = import.meta.env.VITE_BACKEND
 
 function Signin() {
     const [showPassword, setShowPassword] = useState(false)
@@ -12,6 +16,7 @@ function Signin() {
         email: '',
         password: ''
     })
+    const navigate = useNavigate()
 
     const handleInputChange = (e) => {
         const { id, value } = e.target
@@ -19,6 +24,20 @@ function Signin() {
             ...prev,
             [id]: value
         }))
+    }
+
+    async function handleSignin() {
+        try {
+            toast.dismiss()
+            const response = await axios.post(`${backend}/hr/signin`, formData)
+            if (response.data.status === "Success") {
+                localStorage.setItem('token', JSON.stringify(response.data.data.user.token))
+                toast.success('Login successful')
+                navigate('/dashboard')
+            }
+        } catch (error) {
+            toast.error(error.response?.data?.data?.message || error.message)
+        }
     }
 
     const isFormValid = () => {
@@ -41,13 +60,13 @@ function Signin() {
                             <label htmlFor="email" className='field-label'>
                                 Email Address<span className='required'>*</span>
                             </label>
-                            <input 
-                                type="email" 
-                                id='email' 
-                                placeholder='Email Address' 
+                            <input
+                                type="email"
+                                id='email'
+                                placeholder='Email Address'
                                 value={formData.email}
                                 onChange={handleInputChange}
-                                className='input-field' 
+                                className='input-field'
                             />
                         </div>
                         <div className='field-group'>
@@ -55,13 +74,13 @@ function Signin() {
                                 Password <span className='required'>*</span>
                             </label>
                             <div className='password-container'>
-                                <input 
-                                    type={showPassword ? "text" : "password"} 
-                                    id='password' 
-                                    placeholder='Password' 
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    id='password'
+                                    placeholder='Password'
                                     value={formData.password}
                                     onChange={handleInputChange}
-                                    className='input-field password-input' 
+                                    className='input-field password-input'
                                 />
                                 <button
                                     type="button"
@@ -74,9 +93,10 @@ function Signin() {
                         </div>
                     </div>
                     <div className='button-container'>
-                        <button 
+                        <button
                             className={`login-button ${isFormValid() ? 'valid' : 'invalid'}`}
                             disabled={!isFormValid()}
+                            onClick={handleSignin}
                         >
                             Login
                         </button>

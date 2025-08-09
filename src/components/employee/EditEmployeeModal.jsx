@@ -1,32 +1,65 @@
 import { useState, useEffect } from 'react';
 import { LuCalendar } from "react-icons/lu";
 import '../../assets/styles/employee/editemployee.css'
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { LoadingSpinnerWithOverlay } from '../global/Loading';
+
+const backend = import.meta.env.VITE_BACKEND
+
+export const positionOptions = [
+    {
+        label: 'Intern',
+        value: 'intern'
+    },
+    {
+        label: 'Full Time',
+        value: 'full_time'
+    },
+    {
+        label: 'Junior',
+        value: 'junior'
+    },
+    {
+        label: 'Senior',
+        value: 'senior'
+    },
+    {
+        label: 'Team Lead',
+        value: 'team_lead'
+    }
+];
 
 function EditEmployeeModal({ isOpen, onClose, employee = null }) {
     const [formData, setFormData] = useState({
-        fullName: '',
+        full_name: '',
         email: '',
-        phone: '',
+        phone_number: '',
         department: '',
         position: '',
         dateOfJoining: ''
     });
     const [isFormValid, setIsFormValid] = useState(false);
-
-    const positionOptions = ['Intern', 'Full Time', 'Junior', 'Senior', 'Team Lead'];
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (employee) {
+            const formatDateForInput = (dateString) => {
+                if (!dateString) return '';
+                return dateString.split('T')[0];
+            };
+
             setFormData({
-                fullName: employee.name || '',
+                full_name: employee.full_name || '',
                 email: employee.email || '',
-                phone: employee.phone || '',
+                phone_number: employee.phone_number || '',
                 department: employee.department || '',
-                position: employee.position || '',
-                dateOfJoining: employee.dateOfJoining || ''
+                position: employee.employement_type || '',
+                dateOfJoining: formatDateForInput(employee.created_at)
             });
         }
     }, [employee]);
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -38,9 +71,9 @@ function EditEmployeeModal({ isOpen, onClose, employee = null }) {
 
     useEffect(() => {
         const isValid =
-            formData.fullName.trim() !== '' &&
+            formData.full_name.trim() !== '' &&
             formData.email.trim() !== '' &&
-            formData.phone.trim() !== '' &&
+            formData.phone_number.trim() !== '' &&
             formData.department.trim() !== '' &&
             formData.position !== '' &&
             formData.dateOfJoining !== '';
@@ -48,35 +81,40 @@ function EditEmployeeModal({ isOpen, onClose, employee = null }) {
         setIsFormValid(isValid);
     }, [formData]);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (!isFormValid) {
-            alert('Please fill all required fields');
-            return;
+    const handleSubmit = async (e) => {
+        try {
+            e.preventDefault();
+            if (!isFormValid) {
+                alert('Please fill all required fields');
+                return;
+            }
+    
+            const data = {
+                full_name: formData.full_name,
+                email: formData.email,
+                phone_number: formData.phone_number,
+                department: formData.department,
+                employement_type: formData.position,
+            }
+            setLoading(true);
+    
+            await axios.post(`${backend}/employee/${employee._id}/update`, data)
+            toast.success('Employee updated successfully');
+            setLoading(false)
+            onClose();
+            setFormData({
+                full_name: '',
+                email: '',
+                phone_number: '',
+                department: '',
+                position: '',
+                dateOfJoining: ''
+            });
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response?.data?.data?.message || error.message);
+            setLoading(false);
         }
-
-        const employeeData = {
-            id: employee ? employee.id : Date.now(),
-            name: formData.fullName,
-            email: formData.email,
-            phone: formData.phone,
-            department: formData.department,
-            position: formData.position,
-            dateOfJoining: formData.dateOfJoining,
-        };
-
-        console.log('Employee Data:', employeeData);
-
-        onClose();
-
-        setFormData({
-            fullName: '',
-            email: '',
-            phone: '',
-            department: '',
-            position: '',
-            dateOfJoining: ''
-        });
     };
 
     if (!isOpen) return null;
@@ -96,14 +134,16 @@ function EditEmployeeModal({ isOpen, onClose, employee = null }) {
                     </button>
                 </div>
 
+                {loading && <LoadingSpinnerWithOverlay />}
+
                 <form onSubmit={handleSubmit} className="edit-employee-form">
                     <div className="edit-employee-grid">
                         <div>
                             <input
                                 type="text"
-                                name="fullName"
+                                name="full_name"
                                 placeholder="Full Name*"
-                                value={formData.fullName}
+                                value={formData.full_name}
                                 onChange={handleInputChange}
                                 required
                                 className="edit-employee-input"
@@ -125,9 +165,9 @@ function EditEmployeeModal({ isOpen, onClose, employee = null }) {
                         <div>
                             <input
                                 type="tel"
-                                name="phone"
+                                name="phone_number"
                                 placeholder="Phone Number*"
-                                value={formData.phone}
+                                value={formData.phone_number}
                                 onChange={handleInputChange}
                                 required
                                 className="edit-employee-input"
@@ -155,9 +195,9 @@ function EditEmployeeModal({ isOpen, onClose, employee = null }) {
                                 className="edit-employee-select"
                             >
                                 <option value="" disabled className="text-gray-500">Position*</option>
-                                {positionOptions.map((position) => (
-                                    <option key={position} value={position}>
-                                        {position}
+                                {positionOptions.map((position, index) => (
+                                    <option key={index} value={position.value}>
+                                        {position.label}
                                     </option>
                                 ))}
                             </select>

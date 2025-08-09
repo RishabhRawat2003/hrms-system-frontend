@@ -15,7 +15,7 @@ import { RxExit } from "react-icons/rx";
 import { HiOutlineUsers } from "react-icons/hi";
 import { BsBarChart, BsStars } from "react-icons/bs";
 import { LoadingSpinnerWithOverlay } from '../components/global/Loading';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import PopupModal from '../components/global/Popup';
 import '../assets/styles/dashboard/dashboard.css';
 import Candidates from './Candidates';
@@ -30,6 +30,7 @@ export default function Dashboard() {
     const [loading, setLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
+    const navigate = useNavigate()
 
 
     const renderSection = () => {
@@ -90,6 +91,8 @@ export default function Dashboard() {
     ]
 
     function handleLogout() {
+        localStorage.removeItem('token')
+        navigate('/signin')
         toast.success('Logged out successfully')
     }
 

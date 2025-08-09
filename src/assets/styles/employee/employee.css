@@ -144,16 +144,16 @@
     height: 1rem;
     color: #374151;
 }
-
 .employee-table-wrapper {
     width: 100%;
-    height: auto;
+    height: 70rem;
     display: flex;
     flex-direction: column;
 }
 
 .employee-table-container {
     overflow-x: auto;
+    height: 100%;
     padding: 1rem;
 }
 
@@ -161,10 +161,10 @@
     min-width: 100%;
     font-size: 0.875rem;
     text-align: left;
-    height: 100%;
+    height: auto;
     box-shadow: 0px 4px 10px 0px #12121233;
     border-radius: 1.5rem;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .employee-table-head {
@@ -178,6 +178,7 @@
 
 .employee-table-row {
     border-bottom: 1px solid #f3f4f6;
+    position: relative; 
 }
 
 .employee-table-cell {
@@ -190,6 +191,7 @@
 
 .employee-action-cell {
     position: relative;
+    overflow: visible; 
 }
 
 .employee-action-wrapper {
@@ -213,24 +215,17 @@
 .employee-action-menu {
     position: absolute;
     right: 0;
+    top: 100%;
+    margin-top: 0.25rem;
     width: 12rem;
     overflow: hidden;
     background-color: white;
     border: 1px solid #d1d5db;
     border-radius: 0.5rem;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    z-index: 50;
+    z-index: 1000;
 }
 
-.employee-action-menu-down {
-    top: 100%;
-    margin-top: 0.25rem;
-}
-
-.employee-action-menu-up {
-    bottom: 100%;
-    margin-bottom: 0.25rem;
-}
 
 .employee-action-list {
     font-size: 0.875rem;
@@ -258,4 +253,5 @@
     padding: 2rem 1rem;
     text-align: center;
     color: #6b7280;
+    height: 10rem;
 }

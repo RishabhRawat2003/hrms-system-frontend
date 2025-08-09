@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
 import { LuDownload } from "react-icons/lu";
 import '../../assets/styles/candidate/candidateform.css'
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import { LoadingSpinnerWithOverlay } from '../global/Loading';
+
+const backend = import.meta.env.VITE_BACKEND
 
 function AddCandidateModal({ isOpen, onClose }) {
     const [formData, setFormData] = useState({
@@ -13,6 +18,7 @@ function AddCandidateModal({ isOpen, onClose }) {
     const [resume, setResume] = useState(null);
     const [isChecked, setIsChecked] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -39,37 +45,95 @@ function AddCandidateModal({ isOpen, onClose }) {
         setIsFormValid(isValid);
     }, [formData, resume, isChecked]);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (!isFormValid) {
-            alert('Please fill all required fields and confirm the declaration');
-            return;
+    const validateForm = () => {
+        toast.dismiss();
+
+        const nameRegex = /^[A-Za-z\s]+$/;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^\d{10}$/;
+
+        const fullName = formData.fullName.trim();
+        if (!fullName) {
+            toast.error("Full name is required");
+            return false;
         }
-        const newCandidate = {
-            id: Date.now(),
-            name: formData.fullName,
-            email: formData.email,
-            phone: formData.phone,
-            position: formData.position,
-            status: "New",
-            experience: formData.experience,
-        };
+        if (!nameRegex.test(fullName)) {
+            toast.error("Full name must only contain letters and spaces");
+            return false;
+        }
 
-        console.log('Candidate Data:', newCandidate);
-        console.log('Resume File:', resume);
+        const email = formData.email.trim();
+        if (!email) {
+            toast.error("Email is required");
+            return false;
+        }
+        if (!emailRegex.test(email)) {
+            toast.error("Invalid email format");
+            return false;
+        }
 
-        onClose();
+        const phone = formData.phone.trim();
+        if (!phone) {
+            toast.error("Phone number is required");
+            return false;
+        }
+        if (!phoneRegex.test(phone)) {
+            toast.error("Phone number must be at least 10 digits");
+            return false;
+        }
 
-        // Reset form
-        setFormData({
-            fullName: '',
-            email: '',
-            phone: '',
-            position: '',
-            experience: ''
-        });
-        setResume(null);
-        setIsChecked(false);
+        if (!formData.position.trim()) {
+            toast.error("Position is required");
+            return false;
+        }
+
+        if (!formData.experience.trim()) {
+            toast.error("Experience is required");
+            return false;
+        }
+
+        return true;
+    };
+
+
+    const handleSubmit = async (e) => {
+        try {
+            e.preventDefault();
+            if (!validateForm()) return
+
+            setLoading(true);
+            const form = new FormData();
+            form.append('full_name', formData.fullName);
+            form.append('email', formData.email);
+            form.append('phone_number', formData.phone);
+            form.append('position', formData.position);
+            form.append('experience', formData.experience);
+            form.append('file', resume);
+
+            const response = await axios.post(`${backend}/candidate/add-candidate`, form, {
+                headers: {
+                    'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+                }
+            });
+
+            toast.success('Candidate added successfully');
+            setLoading(false);
+            onClose();
+
+            setFormData({
+                fullName: '',
+                email: '',
+                phone: '',
+                position: '',
+                experience: ''
+            });
+            setResume(null);
+            setIsChecked(false);
+        } catch (error) {
+            setLoading(false);
+            console.error('Error adding candidate:', error);
+            toast.error(error.response?.data?.data?.message || error.message)
+        }
     };
 
     if (!isOpen) return null;
@@ -86,6 +150,9 @@ function AddCandidateModal({ isOpen, onClose }) {
                         ×
                     </button>
                 </div>
+                {
+                    loading && <LoadingSpinnerWithOverlay />
+                }
 
                 <form onSubmit={handleSubmit} className="candidate-form-content">
                     <div className="candidate-form-grid">
@@ -191,8 +258,8 @@ function AddCandidateModal({ isOpen, onClose }) {
                             type="submit"
                             disabled={!isFormValid}
                             className={`candidate-form-submit-btn ${isFormValid
-                                    ? 'candidate-form-submit-enabled'
-                                    : 'candidate-form-submit-disabled'
+                                ? 'candidate-form-submit-enabled'
+                                : 'candidate-form-submit-disabled'
                                 }`}
                         >
                             Save

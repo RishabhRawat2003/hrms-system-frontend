@@ -3,6 +3,7 @@
     height: auto;
     display: flex;
     flex-direction: column;
+    overflow: visible;
     gap: 1rem;
 }
 
@@ -192,13 +193,16 @@
 
 .candidate-table-wrapper {
     width: 100%;
-    height: auto;
+    height: 90vh;
     display: flex;
     flex-direction: column;
+    overflow: visible;
 }
 
 .candidate-table-container {
     overflow-x: auto;
+    height: 100%;
+    overflow-y: visible;
     padding: 1rem;
 }
 
@@ -206,10 +210,10 @@
     min-width: 100%;
     font-size: 0.875rem;
     text-align: left;
-    height: 100%;
+    height: auto;
     box-shadow: 0px 4px 10px 0px #12121233;
     border-radius: 1.5rem;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .candidate-table-header {
@@ -222,11 +226,17 @@
 }
 
 .candidate-table-row {
-    
+    position: relative;
 }
 
 .candidate-table-td {
     padding: 0.75rem 1rem;
+}
+
+.candidate-no-data {
+    padding: 1rem;
+    text-align: center;
+    height: 10rem;
 }
 
 .candidate-status-wrapper {
@@ -245,7 +255,7 @@
 .candidate-status-arrow {
     pointer-events: none;
     position: absolute;
-    right: 2rem;
+    right: 2.5rem;
     top: 50%;
     transform: translateY(-50%);
 }
@@ -258,6 +268,7 @@
 
 .candidate-action-cell {
     position: relative;
+    overflow: visible;
 }
 
 .candidate-action-wrapper {
@@ -281,23 +292,15 @@
 .candidate-action-menu {
     position: absolute;
     right: 0;
+    top: 100%;
+    margin-top: 0.25rem;
     width: 12rem;
     overflow: hidden;
     background-color: white;
     border: 1px solid #d1d5db;
     border-radius: 0.5rem;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    z-index: 50;
-}
-
-.candidate-action-menu-down {
-    top: 100%;
-    margin-top: 0.25rem;
-}
-
-.candidate-action-menu-up {
-    bottom: 100%;
-    margin-bottom: 0.25rem;
+    z-index: 1000;
 }
 
 .candidate-action-list {

@@ -1,77 +1,70 @@
 import { useEffect, useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
-import EditEmployeeModal from '../components/employee/EditEmployeeModal';
+import EditEmployeeModal, { positionOptions } from '../components/employee/EditEmployeeModal';
 import '../assets/styles/employee/employee.css';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { LoadingSpinnerWithoutOverlay } from '../components/global/Loading';
 
-const employeesData = [
-    {
-        id: 1,
-        name: "Jacob William",
-        email: "jacob.william@example.com",
-        phone: "(252) 555-0111",
-        position: "Senior Developer",
-        department: "IT",
-        dateOfJoining: "2023-01-15",
-    },
-    {
-        id: 2,
-        name: "Guy Hawkins",
-        email: "guy.hawkins@example.com",
-        phone: "(907) 555-0101",
-        position: "HR Manager",
-        department: "Human Resources",
-        dateOfJoining: "2022-08-20",
-    },
-    {
-        id: 3,
-        name: "Arlene McCoy",
-        email: "arlene.mccoy@example.com",
-        phone: "(302) 555-0107",
-        position: "UI/UX Designer",
-        department: "Design",
-        dateOfJoining: "2023-03-10",
-    },
-    {
-        id: 4,
-        name: "Leslie Alexander",
-        email: "leslie.alexander@example.com",
-        phone: "(207) 555-0119",
-        position: "Full Stack Developer",
-        department: "IT",
-        dateOfJoining: "2022-11-05",
-    },
-    {
-        id: 5,
-        name: "Devon Lane",
-        email: "devon.lane@example.com",
-        phone: "(555) 123-4567",
-        position: "Marketing Specialist",
-        department: "Marketing",
-        dateOfJoining: "2023-02-28",
-    },
-];
-
+const backend = import.meta.env.VITE_BACKEND
 
 function Employees() {
-    const [employees, setEmployees] = useState(employeesData);
-    const [positions, setPositions] = useState([]);
+    const [employees, setEmployees] = useState([]);
+    const [allEmployees, setAllEmployees] = useState([]);
     const [selectedPosition, setSelectedPosition] = useState("");
     const [openActionMenu, setOpenActionMenu] = useState(null);
     const [selectedEmployee, setSelectedEmployee] = useState(null);
     const [editEmployeePopup, setEditEmployeePopup] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    const positionOptions = ["Senior Developer", "HR Manager", "UI/UX Designer", "Full Stack Developer", "Marketing Specialist"];
+    async function getEmployees() {
+        try {
+            setLoading(true);
+
+            const response = await axios.post(`${backend}/employee/list`, {
+                pageNum: 1,
+                pageSize: 10,
+                filter: {}
+            });
+            const employeeList = response.data.data.employeeList || [];
+            const activeEmployees = employeeList.filter(employee => !employee.is_deleted);
+            setAllEmployees(activeEmployees);
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response?.data?.data?.message || error.message);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     useEffect(() => {
-        const fetchPositions = async () => {
-            const response = await new Promise((resolve) =>
-                setTimeout(() => resolve(positionOptions), 500)
-            );
-            setPositions(response);
-        };
+        applyFilters();
+    }, [selectedPosition, searchTerm, allEmployees]);
 
-        fetchPositions();
+    function applyFilters() {
+        let filteredEmployees = [...allEmployees];
+
+        if (selectedPosition) {
+            filteredEmployees = filteredEmployees.filter(employee =>
+                employee.employement_type === selectedPosition
+            );
+        }
+
+        if (searchTerm) {
+            const query = searchTerm?.toLowerCase();
+            filteredEmployees = filteredEmployees.filter(employee =>
+                employee.full_name?.toLowerCase().includes(query) ||
+                employee.email?.toLowerCase().includes(query) ||
+                employee.phone_number?.toLowerCase().includes(query)
+            );
+        }
+
+        setEmployees(filteredEmployees);
+    }
+
+    useEffect(() => {
+        getEmployees()
     }, []);
 
     useEffect(() => {
@@ -91,19 +84,30 @@ function Employees() {
     const handleEditEmployee = (employee) => {
         setEditEmployeePopup(true);
         setSelectedEmployee(employee);
-        console.log(`Editing employee: ${employee.name}`);
         setOpenActionMenu(null);
     };
 
-    const handleDeleteEmployee = (employeeId) => {
-        const updatedEmployees = employees.filter(employee => employee.id !== employeeId);
-        setEmployees(updatedEmployees);
+    const handleDeleteEmployee = async (employeeId) => {
+        try {
+            toast.dismiss()
+            setLoading(true);
+            await axios.post(`${backend}/employee/${employeeId}/update`, { is_deleted: true });
+            toast.success('Employee deleted successfully');
+            setLoading(false);
+            getEmployees();
+        } catch (error) {
+            console.error('Error deleting employee:', error);
+            setLoading(false);
+            toast.error(error.response?.data?.data?.message || error.message);
+        }
         setOpenActionMenu(null);
     };
 
-    const shouldOpenUpward = (index) => {
-        return index >= employees.length - 2;
-    };
+    function handleOnClose() {
+        setEditEmployeePopup(false)
+        setSelectedEmployee(null)
+        getEmployees()
+    }
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -113,14 +117,6 @@ function Employees() {
             day: 'numeric'
         });
     };
-
-    const filteredEmployees = employees.filter(employee => {
-        const matchesSearch = employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            employee.phone.includes(searchTerm);
-        const matchesPosition = selectedPosition === "" || employee.position === selectedPosition;
-        return matchesSearch && matchesPosition;
-    });
 
     return (
         <div className='employee-container'>
@@ -146,9 +142,9 @@ function Employees() {
                                 className="employee-position-select"
                             >
                                 <option value="">All Positions</option>
-                                {positions.map((position) => (
-                                    <option key={position} value={position}>
-                                        {position}
+                                {positionOptions.map((position) => (
+                                    <option key={position} value={position.value}>
+                                        {position.label}
                                     </option>
                                 ))}
                             </select>
@@ -171,77 +167,88 @@ function Employees() {
                 </div>
             </div>
 
-            {editEmployeePopup && <EditEmployeeModal isOpen={editEmployeePopup} onClose={() => setEditEmployeePopup(false)} employee={null} />}
+            {editEmployeePopup && <EditEmployeeModal isOpen={editEmployeePopup} onClose={handleOnClose} employee={selectedEmployee} />}
 
-            <div className='employee-table-wrapper'>
-                <div className="employee-table-container">
-                    <table className="employee-table">
-                        <thead className="employee-table-head">
-                            <tr>
-                                <th className="employee-table-header">Sr no.</th>
-                                <th className="employee-table-header">Employee Name</th>
-                                <th className="employee-table-header">Email Address</th>
-                                <th className="employee-table-header">Phone Number</th>
-                                <th className="employee-table-header">Position</th>
-                                <th className="employee-table-header">Department</th>
-                                <th className="employee-table-header">Date of Joining</th>
-                                <th className="employee-table-header">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredEmployees.length > 0 ? (
-                                filteredEmployees.map((employee, index) => (
-                                    <tr key={employee.id} className="employee-table-row">
-                                        <td className="employee-table-cell">{`0${index + 1}`}</td>
-                                        <td className="employee-table-cell employee-name-cell">{employee.name}</td>
-                                        <td className="employee-table-cell">{employee.email}</td>
-                                        <td className="employee-table-cell">{employee.phone}</td>
-                                        <td className="employee-table-cell">{employee.position}</td>
-                                        <td className="employee-table-cell">
-                                            {employee.department}
-                                        </td>
-                                        <td className="employee-table-cell">{formatDate(employee.dateOfJoining)}</td>
-                                        <td className="employee-table-cell employee-action-cell">
-                                            <div className="employee-action-wrapper">
-                                                <button
-                                                    onClick={(e) => toggleActionMenu(employee.id, e, index)}
-                                                    className="employee-action-button"
-                                                >
-                                                    ⋮
-                                                </button>
-                                                {openActionMenu === employee.id && (
-                                                    <div className={`employee-action-menu ${shouldOpenUpward(index) ? 'employee-action-menu-up' : 'employee-action-menu-down'}`}>
-                                                        <ul className="employee-action-list">
-                                                            <li
-                                                                className="employee-action-item"
-                                                                onClick={() => handleEditEmployee(employee)}
-                                                            >
-                                                                Edit
-                                                            </li>
-                                                            <li
-                                                                className="employee-action-item employee-action-delete"
-                                                                onClick={() => handleDeleteEmployee(employee.id)}
-                                                            >
-                                                                Delete
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </td>
+            {
+                loading
+                    ? <LoadingSpinnerWithoutOverlay />
+                    : <div className='employee-table-wrapper'>
+                        <div className="employee-table-container">
+                            <table className="employee-table">
+                                <thead className="employee-table-head">
+                                    <tr>
+                                        <th className="employee-table-header">Sr no.</th>
+                                        <th className="employee-table-header">Employee Name</th>
+                                        <th className="employee-table-header">Email Address</th>
+                                        <th className="employee-table-header">Phone Number</th>
+                                        <th className="employee-table-header">Position</th>
+                                        <th className="employee-table-header">Department</th>
+                                        <th className="employee-table-header">Date of Joining</th>
+                                        <th className="employee-table-header">Action</th>
                                     </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="8" className="employee-no-data">
-                                        No employees found matching your search criteria.
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                                </thead>
+                                <tbody>
+                                    {employees.length > 0 ? (
+                                        employees.map((employee, index) => (
+                                            <tr key={index} className="employee-table-row">
+                                                <td className="employee-table-cell">{`0${index + 1}`}</td>
+                                                <td className="employee-table-cell employee-name-cell">{employee.full_name}</td>
+                                                <td className="employee-table-cell">{employee.email}</td>
+                                                <td className="employee-table-cell">{employee.phone_number}</td>
+                                                <td className="employee-table-cell">{
+                                                    positionOptions.map((item) => {
+                                                        if (item.value === employee.employement_type) {
+                                                            return item.label
+                                                        }
+                                                    })
+                                                    || 'N/A'}</td>
+                                                <td className="employee-table-cell">
+                                                    {employee.department || 'N/A'}
+                                                </td>
+                                                <td className="employee-table-cell">{formatDate(employee.created_at)}</td>
+                                                <td className="employee-table-cell employee-action-cell">
+                                                    <div className="employee-action-wrapper">
+                                                        <button
+                                                            onClick={(e) => toggleActionMenu(employee._id, e, index)}
+                                                            className="employee-action-button"
+                                                        >
+                                                            ⋮
+                                                        </button>
+                                                        {openActionMenu === employee._id && (
+                                                            <div className={`employee-action-menu`}>
+                                                                <ul className="employee-action-list">
+                                                                    <li
+                                                                        className="employee-action-item"
+                                                                        onClick={() => handleEditEmployee(employee)}
+                                                                    >
+                                                                        Edit
+                                                                    </li>
+                                                                    <li
+                                                                        className="employee-action-item employee-action-delete"
+                                                                        onClick={() => handleDeleteEmployee(employee._id)}
+                                                                    >
+                                                                        Delete
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+
+                                                        )}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan="8" className="employee-no-data">
+                                                No employees found matching your search criteria.
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            }
         </div>
 
     )
